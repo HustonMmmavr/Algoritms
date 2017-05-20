@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <limits.h>
+//#define TEST
+#define MEMORY_ERROR -1
+#define MEMORY_SUCCESS 1
+// write to dipl and rem
+
+struct Rect
+{
+	int w, h, S;
+};
+
+//typedef Rect T, *pT;
+typedef int T, *pT;
+struct stack
+{
+	T data;
+	struct stack* prev;
+};
+
+int Push(stack ** stackHead, T data)
+{
+	stack *stackElement = new stack;
+	if (!stackElement) return MEMORY_ERROR;
+	stackElement->data = data;
+	stackElement->prev = *stackHead;
+	*stackHead = stackElement;
+	return MEMORY_SUCCESS;
+}
+
+T Pop(stack **stackHead)
+{
+	stack* stackOldHead = *stackHead;
+	T data = stackOldHead->data;
+	*stackHead = stackOldHead->prev;
+	delete stackOldHead;
+	return data;
+}
+
+bool HGoesDown(int h, stack *t)
+{
+	if (t == NULL) return false;
+	return h < (t->data); //t->(*data);
+}
+
+int GetMaxS()
+{
+	stack *s = NULL, *t = NULL, *X = NULL;
+	int n;
+	scanf("%d", &n);
+
+	int h, w;
+	int x = 0;
+	int area;
+	int maxArea = 0;
+	
+	for (int i = 0; i < n; i++, x += w)
+	{
+		scanf("%d %d", &w, &h);
+
+		printf("x = %d\n", x);
+		while (HGoesDown(h, t))//t.top() > h) // t - stack height
+		{
+		    area = (x - (s->data)) * (t->data); 
+			printf("%d = %d * %d\n", area, (x - (s->data)), (t->data));
+			//check(area);
+			if (area > maxArea) maxArea = area;
+			Pop(&t);
+			Pop(&X);
+			Pop(&s);
+		}
+		int y = x + w;
+		int z = t != NULL ? (X->data) : 0;
+		Push(&s, z);
+		Push(&X, y);
+		Push(&t, h);
+	}
+
+	while (t)
+	{
+		h = t->data;
+		int y = s ? (s->data) : 0;
+		area = (x - y) * h;
+		printf("%d = %d * %d\n", area, (x - (s->data)), h);
+		if (area > maxArea) maxArea = area;
+
+		Pop(&t);
+		Pop(&X);
+		Pop(&s);
+	}
+	printf("%d", maxArea);
+	return 0;
+}
+
+
+int main()
+{
+	//
+	int r = GetMaxS();
+	getchar();
+	getchar();
+	return 0;
+}
+
+
+/*s.push(X.top()); // GetXTop(){ if X.epty() return 0; else return X.top();}
+X.push(x);
+t.push(h);
+if (tn == 0)
+{
+s[tn] = i;
+t[tn] = i;
+tn++;
+}
+else
+{
+h = t[tn - 1];
+
+if()
+
+}*/
